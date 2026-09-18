@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  testes:
     runs-on: ubuntu-latest
 
     services:
@@ -21,8 +21,14 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      BASE_URL: http://localhost:3000
+      ADMIN_EMAIL: admin@escola.com
+      ADMIN_SENHA: admin123
+      MONGODB_URI: mongodb://127.0.0.1:27017/gestao-de-alunos-test
+
     steps:
-      - name: Checkout do código
+      - name: Baixar o código
         uses: actions/checkout@v4
 
       - name: Configurar Node.js
@@ -34,7 +40,15 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      - name: Iniciar a API
+        run: npm start > api.log 2>&1 &
+
+      - name: Aguardar a API iniciar
+        run: npx wait-on http://localhost:3000
+
       - name: Executar testes
         run: npm test
-        env:
-          MONGODB_URI: mongodb://127.0.0.1:27017/gestao-de-alunos-test
+
+      - name: Mostrar log da API se falhar
+        if: failure()
+        run: cat api.log

@@ -1,0 +1,13 @@
+{
+  "novoAluno": {
+    "nome": "Aluno Teste",
+    "emailBase": "aluno.teste",
+    "dominio": "@example.com",
+    "senha": "senha123",
+    "matriculaBase": "2026",
+    "disciplinaId": "disciplina-matematica"
+  },
+  "trabalho": {
+    "titulo": "Trabalho de API Automatizado"
+  }
+}
