@@ -54,6 +54,15 @@ describe('Fluxo completo de entrega de trabalho', function () {
     disciplinaId = resposta.body[0].id;
   });
 
+  it('deve matricular o aluno na disciplina', async () => {
+    const resposta = await api()
+      .post(`/api/admin/disciplinas/${disciplinaId}/matriculas`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+      .send({ alunoId });
+
+    expect(resposta.status).to.be.oneOf([200, 201]);
+  });
+
   it('deve realizar login como o aluno cadastrado', async () => {
     tokenAluno = await loginAluno(emailAluno, dados.novoAluno.senha);
 
